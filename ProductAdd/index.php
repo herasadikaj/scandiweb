@@ -4,9 +4,6 @@ include "header.php";
 
 ?>
 
-
-
-
 <form id="product_form" action="process.php" method="post">
         <label for="sku">SKU:</label>
         <input type="text" id="sku" name="sku"><br>
@@ -25,7 +22,7 @@ include "header.php";
             document.getElementById("bookAttributes").style.display = "none";
             document.getElementById("furnitureAttributes").style.display = "none";
             
-            if (productType === "DVD") {
+              if (productType === "DVD") {
                 document.getElementById("dvdAttributes").style.display = "block";
             } else if (productType === "Book") {
                 document.getElementById("bookAttributes").style.display = "block";
@@ -47,13 +44,13 @@ include "header.php";
         <div id="dvdAttributes" class="attribute">
             <label for="size">Size (MB) or Text:</label>
             <input type="text" id="size" name="size"><br>
-            <p>Product description: Size in MB or descriptive text</p>
+            <p>Product description: Please provide size in MB or descriptive text</p>
         </div>
 
         <div id="bookAttributes" class="attribute">
             <label for="weight">Weight (Kg) or Text:</label>
             <input type="text" id="weight" name="weight"><br>
-            <p>Product description: Weight in Kg or descriptive text</p>
+            <p>Product description: Please provide weight in Kg or descriptive text</p>
         </div>
 
         <div id="furnitureAttributes" class="attribute">

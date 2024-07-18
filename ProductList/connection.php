@@ -1,12 +1,9 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "productdb";
+$con = mysqli_connect("localhost", "root", "", "productdb");
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (mysqli_connect_errno()) {
+    die("Connection error: " . mysqli_connect_error());
 }
+
+return $con;
 ?>
