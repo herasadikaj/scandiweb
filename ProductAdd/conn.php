@@ -1,90 +1,57 @@
+
 <?php
+include_once "conn.php";
+$con = new Connect();
 
-class Connect
-{
-    private $username = "root";
-    private $password = "";
-    private $server_name = "localhost";
-    private $db_name = "productdb"; 
-    public $conn;
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
-    function __construct()
-    {
-        $this->conn = new mysqli($this->server_name, $this->username, $this->password, $this->db_name);
-        if ($this->conn->connect_error) {
-            die("Connection failed: " . $this->conn->connect_error);
-        }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $sku = $_POST['sku'];
+    $name = $_POST['name'];
+    $price = $_POST['price'];
+    $productType = $_POST['productType'];
+
+    echo "SKU: $sku<br>";
+    echo "Name: $name<br>";
+    echo "Price: $price<br>";
+    echo "Product Type: $productType<br>";
+
+    $stmt = null;
+    $sql = "";
+
+    if ($productType === 'DVD') {
+        $size = $_POST['size'];
+        echo "Size: $size<br>"; 
+        $sql = "INSERT INTO dvd (sku, name, price, size) VALUES (?, ?, ?, ?)";
+        $stmt = $con->conn->prepare($sql);
+        $stmt->bind_param("ssss", $sku, $name, $price, $size);
+    } elseif ($productType === 'Book') {
+        $weight = $_POST['weight'];
+        echo "Weight: $weight<br>"; 
+        $sql = "INSERT INTO book (sku, name, price, weight) VALUES (?, ?, ?, ?)";
+        $stmt = $con->conn->prepare($sql);
+        $stmt->bind_param("ssss", $sku, $name, $price, $weight);
+    } elseif ($productType === 'Furniture') {
+        $height = $_POST['height'];
+        $width = $_POST['width'];
+        $length = $_POST['length'];
+        echo "Height: $height, Width: $width, Length: $length<br>"; 
+        $sql = "INSERT INTO furniture (sku, name, price, height, width, length) VALUES (?, ?, ?, ?, ?, ?)";
+        $stmt = $con->conn->prepare($sql);
+        $stmt->bind_param("ssssss", $sku, $name, $price, $height, $width, $length);
     }
 
-    function update($query)
-    {
-        if ($this->conn->query($query) === TRUE) {
-            return true; 
-        } else {
-            echo '<script>alert("' . $this->conn->error . '");</script>';
-            return false; 
-        }
+    if ($stmt && $stmt->execute()) {
+        echo "Data inserted successfully"; 
+        header("Location: success_page.php");
+        exit();
+    } else {
+        echo "Error: " . ($stmt ? $stmt->error : 'Invalid product type or preparation failed');
     }
 
-    function delete($sql, $message) {
-        if ($this->conn->query($sql) === TRUE) {
-            echo $message;
-        } else {
-            echo "Error: " . $sql . "<br>" . $this->conn->error;
-        }
-    }
-
-    function select_by_query($query) {
-        $result = $this->conn->query($query);
-        if ($result === FALSE) {
-            die("Query failed: " . $this->conn->error);
-        }
-        return $result;
-    }
-
-    function select_all($table_name)
-    {
-        $sql = "SELECT * FROM $table_name";
-        $result = $this->conn->query($sql);
-        if ($result === FALSE) {
-            die("Query failed: " . $this->conn->error);
-        }
-        return $result;
-    }
-
-    function select($table_name, $id)
-    {
-        // Use prepared statements to prevent SQL injection
-        $sql = "SELECT * FROM $table_name WHERE id = ?";
-        $stmt = $this->conn->prepare($sql);
-        $stmt->bind_param("i", $id);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($result === FALSE) {
-            die("Query failed: " . $this->conn->error);
-        }
-        return $result;
-    }
-
-    function insert($table_name, $data)
-    {
-        // Prepare the column names and placeholders
-        $columns = implode(", ", array_keys($data));
-        $placeholders = implode(", ", array_fill(0, count($data), "?"));
-
-        // Create the SQL statement
-        $sql = "INSERT INTO $table_name ($columns) VALUES ($placeholders)";
-        $stmt = $this->conn->prepare($sql);
-
-        // Bind parameters
-        $types = str_repeat("s", count($data)); // Assuming all fields are strings; adjust as needed
-        $stmt->bind_param($types, ...array_values($data));
-
-        if ($stmt->execute()) {
-            echo '<script>alert("The product was added successfully");</script>';
-        } else {
-            echo '<script>alert("' . $this->conn->error . '");</script>';
-        }
+    if ($stmt) {
+        $stmt->close();
     }
 }
 ?>
