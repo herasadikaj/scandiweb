@@ -42,7 +42,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if ($stmt && $stmt->execute()) {
-        echo "Data inserted successfully"; 
+        echo "Data inserted successfully";
         header("Location: success_page.php");
         exit();
     } else {

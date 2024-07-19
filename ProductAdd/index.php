@@ -29,7 +29,7 @@ include "addproduct.php";
         <input type="text" id="name" name="name" required><br>
 
         <label for="price">Price ($):</label>
-        <input type="number" step="0.01" id="price" name="price" required><br>
+        <input type="text" step="0.01" id="price" name="price" required><br>
 
         <label for="productType">Type Switcher:</label>
         <select id="productType" name="productType" onchange="showAttributes()">
