@@ -1,7 +1,7 @@
 <?php
 include 'header.php';
 include 'connection.php';
-
+include 'product.php';
 class DeleteProduct {
     private $conn;
 
