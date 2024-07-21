@@ -3,9 +3,7 @@ include "header.php";
 include "conn.php";
 include "product.php";
 
-
 $con = (new Connect())->conn;
-
 
 $bookQuery = "SELECT sku, name, price, 'Book' as type, weight as attribute FROM book";
 $dvdQuery = "SELECT sku, name, price, 'DVD' as type, size as attribute FROM dvd";
@@ -21,19 +19,16 @@ if (!$bookResult || !$dvdResult || !$furnitureResult) {
 
 $allProducts = [];
 
-
 while ($row = $bookResult->fetch_assoc()) {
     $allProducts[] = $row;
 }
-
 
 while ($row = $dvdResult->fetch_assoc()) {
     $allProducts[] = $row;
 }
 
-
 while ($row = $furnitureResult->fetch_assoc()) {
-    $row['attribute'] = $row['height'] . 'x' . $row['width'] . 'x' . $row['length']; 
+    $row['attribute'] = $row['height'] . ' x ' . $row['width'] . ' x ' . $row['length'];
     $allProducts[] = $row;
 }
 
@@ -41,9 +36,7 @@ usort($allProducts, function($a, $b) {
     return strcmp($a['sku'], $b['sku']);
 });
 
-
 $displayProducts = array_slice($allProducts, 0, 12);
-
 ?>
 
 <section class="mt-5">
@@ -54,7 +47,6 @@ $displayProducts = array_slice($allProducts, 0, 12);
                 if (count($displayProducts) > 0) {
                     $counter = 0;
                     foreach ($displayProducts as $row) {
-                      
                         if ($row['type'] == 'DVD') {
                             $product = new DVD($row['sku'], $row['name'], $row['price'], $row['attribute']);
                         } elseif ($row['type'] == 'Book') {
@@ -68,8 +60,9 @@ $displayProducts = array_slice($allProducts, 0, 12);
                         <div class="col-md-3 mb-4">
                             <div class="product-card">
                                 <input type="checkbox" name="delete_ids[]" value="<?php echo $row['sku']; ?>" class="delete-checkbox">
-                                <h6><?php echo $product->getName(); ?></h6>
-                                <?php $product->display(); ?>
+                                <div class="product-details">
+                                    <?php $product->display(); ?>
+                                </div>
                             </div>
                         </div>
                         <?php
@@ -84,7 +77,8 @@ $displayProducts = array_slice($allProducts, 0, 12);
                 }
                 ?>
             </div>
-            <button type="submit" class="btn btn-danger mt-3">Mass Delete</button>
+            <button type="submit" class="delete-checkbox">Mass Delete</button>
+            <a href="../ProductAdd/index.php" class="btn btn-primary mt-3">Add</a>
         </form>
     </div>
 </section>
