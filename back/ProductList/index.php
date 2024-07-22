@@ -28,7 +28,7 @@ while ($row = $dvdResult->fetch_assoc()) {
 }
 
 while ($row = $furnitureResult->fetch_assoc()) {
-    $row['attribute'] = $row['height'] . ' x ' . $row['width'] . ' x ' . $row['length'];
+    $row['attribute'] = $row['height'] . 'x' . $row['width'] . 'x' . $row['length'];
     $allProducts[] = $row;
 }
 
@@ -52,7 +52,7 @@ $displayProducts = array_slice($allProducts, 0, 12);
                         } elseif ($row['type'] == 'Book') {
                             $product = new Book($row['sku'], $row['name'], $row['price'], $row['attribute']);
                         } elseif ($row['type'] == 'Furniture') {
-                            $product = new Furniture($row['sku'], $row['name'], $row['price'], $row['height'], $row['width'], $row['length']);
+                            $product = new Furniture($row['sku'], $row['name'], $row['price'], $row['attribute']);
                         } else {
                             $product = new Product($row['sku'], $row['name'], $row['price']);
                         }
@@ -77,8 +77,8 @@ $displayProducts = array_slice($allProducts, 0, 12);
                 }
                 ?>
             </div>
-            <button type="submit" class="delete-checkbox">Mass Delete</button>
-            <a href="../ProductAdd/index.php" class="btn btn-primary mt-3">Add</a>
+            <button type="submit" class="delete-checkbox" style="background-color:9B4461F;">Mass Delete</button>
+            <button type="button" onclick="window.location.href='../ProductAdd/index.php'">Add</button>
         </form>
     </div>
 </section>

@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <head><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,5 +7,9 @@
     </head>
 
     <body>
+    <header>
+    <header style="background-color:#6A1D2F;">
+        <h2 style="color:white;">Product Add</h2>
 
-   <br> <h2> Product Add </h2> <hr> <br>
+        
+   </header>  <br>

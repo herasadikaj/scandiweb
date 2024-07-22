@@ -1,9 +1,9 @@
 <?php 
 include "header.php";
 include "conn.php";
-include "addproduct.php";
 ?>
- <script>
+
+<script>
     function showAttributes() {
         const productType = document.getElementById("productType").value;
         document.getElementById("dvdAttributes").style.display = "none";
@@ -18,10 +18,52 @@ include "addproduct.php";
             document.getElementById("furnitureAttributes").style.display = "block";
         }
     }
-    </script>
+
+    function validateForm() {
+        const sku = document.getElementById("sku").value.trim();
+        const name = document.getElementById("name").value.trim();
+        const price = document.getElementById("price").value.trim();
+        const productType = document.getElementById("productType").value;
+        let isValid = true;
+        let errorMessage = '';
+
+        if (!sku || !name || !price || isNaN(price)) {
+            isValid = false;
+            errorMessage = 'Please, submit required data. Please, provide the data of indicated type.';
+        } else {
+            if (productType === "DVD") {
+                const size = document.getElementById("size").value.trim();
+                if (!size || isNaN(size)) {
+                    isValid = false;
+                    errorMessage = 'Please, provide the data of indicated type.';
+                }
+            } else if (productType === "Book") {
+                const weight = document.getElementById("weight").value.trim();
+                if (!weight || isNaN(weight)) {
+                    isValid = false;
+                    errorMessage = 'Please, provide the data of indicated type.';
+                }
+            } else if (productType === "Furniture") {
+                const height = document.getElementById("height").value.trim();
+                const width = document.getElementById("width").value.trim();
+                const length = document.getElementById("length").value.trim();
+                if (!height || isNaN(height) || !width || isNaN(width) || !length || isNaN(length)) {
+                    isValid = false;
+                    errorMessage = 'Please, provide the data of indicated type.';
+                }
+            }
+        }
+
+        if (!isValid) {
+            document.getElementById("error_message").innerText = errorMessage;
+            return false;
+        }
+        return true;
+    }
+</script>
 </head>
 <body onload="showAttributes()">
-    <form id="product_form" action="addproduct.php" method="post">
+    <form id="product_form" action="addproduct.php" method="post" onsubmit="return validateForm()">
         <label for="sku">SKU:</label>
         <input type="text" id="sku" name="sku" required><br>
 
@@ -60,10 +102,11 @@ include "addproduct.php";
             <p>Please provide dimensions in HxWxL format</p>
         </div>
 
-        <button type="submit">Save</button>
-        <button type="button" onclick="window.location.href='index.php'">Cancel</button>
-    </form>
+        <p id="error_message" style="color:red;"></p>
 
+        <button type="submit">Save</button>
+        <button type="button" onclick="window.location.href='../ProductList/index.php'">Cancel</button>
+    </form>
 <?php 
 include "footer.php";
 ?>

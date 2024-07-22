@@ -1,4 +1,4 @@
-<footer class="text-center" style="background-color: rgb(79, 79, 79); color: white; padding: 1%;">
+<footer class="text-center" style="background-color:#6A1D2F; color: white; padding: 1%;">
             <p>© 2024 Scandiweb. All rights reserved.</p>
 
         <p>Contact us: <a href="mailto:info@cinelovers.com" style="color: white;">info@scandiweb.com</a> | Phone: <a href="tel:+35568666666" style="color: white;">+35568666666</a></p>
